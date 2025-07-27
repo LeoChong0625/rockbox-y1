@@ -44,7 +44,23 @@ Therefore there are 2 versions of this Rockbox port:
 - lower resolution (1/3 smaller than 360p - images might be blurry, fonts can look a bit off)
 
 ## Installation
-If, despite all warnings, you still want to try you need to do the following:
+### Y1 Helper (recommended for Windows)
+
+Install the most recent release of the Y1 Helper application and follow the instructions to install Rockbox: https://github.com/team-slide/Y1-helper/releases/latest
+
+### SPFlash Tool (recommended for Linux)
+
+1. Download the latest Rockbox included firmware here (the RAR archive, not the ZIP): https://github.com/team-slide/project-gallagher/releases/latest
+2. Unpack the archive
+3. Install SP Flash Tool v5.1904:
+  - Windows: included in the archive, alternatively: https://spflashtools.com/windows/sp-flash-tool-v5-1904
+  - Linux: https://spflashtools.com/linux/sp-flash-tool-v5-1904-for-linux
+4. Start SP Flash Tool
+5. Follow the official firmware flashing instructions but use the MT6572_Android_scatter.txt from the Project Gallagher archive
+
+### Manual installation (for developers)
+
+If, despite all warnings, you still want to try installing it manually you need to do the following:
 
 - have an Innioasis Y1 with ADB enabled
 - root the device (see https://xdaforums.com/t/root-framaroot-a-one-click-apk-to-root-some-devices.2130276/):
@@ -108,11 +124,18 @@ adb reboot
 - Menu/Back: Cancel / Back
 - Media Buttons: Media Actions
 
-## List of working themes (240p)
+## Themes (240p)
+
+### Installation
+
+1. (optional) Download the fontpack, extract it, drag the .rockbox folder onto your device https://www.rockbox.org/dl.cgi?bin=fonts
+2. Download a theme from https://themes.rockbox.org/index.php?target=ipod6g
+3. extract it
+4. drag the .rockbox folder onto your device
+
+### List of working Themes
 
 There are likely more but these are tested.
-
-Download here: https://themes.rockbox.org/index.php?target=ipod6g
 
 - CenterArt
 - FreshOSInstall (needs manual steps)
