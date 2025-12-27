@@ -1,0 +1,41 @@
+name: Build Rockbox Android
+on: [workflow_dispatch] # 允许手动点击运行
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texinfo flex bison build-essential libncurses5-dev libv8-dev zip libsdl1.2-dev
+
+      - name: Install Android NDK
+        run: |
+          wget https://dl.google.com/android/repository/android-ndk-r15c-linux-x86_64.zip
+          unzip -q android-ndk-r15c-linux-x86_64.zip
+          echo "ANDROID_NDK_PATH=$GITHUB_WORKSPACE/android-ndk-r15c" >> $GITHUB_ENV
+
+      - name: Configure and Build
+        run: |
+          mkdir build
+          cd build
+          # 自动选择安卓平台并配置 (针对 y1 优化)
+          ../tools/configure --target=android --resolution=360x640 --type=normal
+          make -j$(nproc)
+          make zip
+          make apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: rockbox-y1-v60-test
+          path: build/*.apk
