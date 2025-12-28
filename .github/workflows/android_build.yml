@@ -28,7 +28,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          ../tools/configure --target=android --resolution=360x640 --type=normal
+          ../tools/configure --target=android --resolution=1080x2460 --type=normal
           make -j$(nproc)
           make zip
           make apk
@@ -38,5 +38,5 @@ jobs:
         with:
           name: Rockbox_V60_Build
           path: |
-            build/*.apk
+            build/android/*.apk
             build/*.zip
