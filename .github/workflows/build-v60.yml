@@ -1,0 +1,64 @@
+name: Build Rockbox for LG V60
+
+on:
+  workflow_dispatch: # 允许手动点击按钮触发编译
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Set up JDK 8
+      uses: actions/setup-java@v3
+      with:
+        java-version: '8'
+        distribution: 'temurin'
+
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y perl python3 zip build-essential libsdl1.2-dev
+
+    - name: Setup Android NDK
+      uses: n0rtum/setup-ndk@v1
+      with:
+        ndk-version: r21e # 使用兼容性较好的 r21e 版本
+
+    - name: Configure Rockbox
+      run: |
+        mkdir build
+        cd build
+        # 自动输入配置参数：
+        # 84 是 Android 平台
+        # 1080x2460 是 LG V60 分辨率
+        # (N)ormal build
+        printf "84\n1080x2460\nN\n" | ../tools/configure
+
+    - name: Build Rockbox Zip
+      run: |
+        cd build
+        make -j$(nproc)
+
+    - name: Build APK
+      run: |
+        cd build
+        make apk
+      env:
+        ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_HOME }}
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: Rockbox-V60-APK
+        path: build/*.apk
+
+    - name: Upload Rockbox Data
+      uses: actions/upload-artifact@v3
+      with:
+        name: Rockbox-Data-Zip
+        path: build/rockbox.zip
