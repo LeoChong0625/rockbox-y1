@@ -38,5 +38,5 @@ jobs:
         with:
           name: Rockbox_V60_Build
           path: |
-            build/android/*.apk
-            build/*.zip
+            **/*.apk
+            **/*.zip
